@@ -1,0 +1,20 @@
+{
+    "name": "ME.ECS.Transform.Tests",
+    "rootNamespace": "",
+    "references": [
+        "ME.ECS.Transform",
+        "ME.ECS",
+        "ME.ECS.Tests"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
