@@ -4,7 +4,8 @@
     "references": [
         "ME.ECS",
         "ME.ECS.IL2CPP",
-        "ME.ECS.FPMath"
+        "ME.ECS.FPMath",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
