@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace ME.ECS.Transform {
 
@@ -17,13 +14,16 @@ namespace ME.ECS.Transform {
             if (copyHierarchy == true) {
 
                 var nodes = from.Read<ME.ECS.Transform.Nodes>();
-                var e = nodes.items.GetEnumerator(in Worlds.current.GetState().allocator);
-                while (e.MoveNext() == true) {
-                    var newChild = new Entity(EntityFlag.None);
-                    newChild.CopyFrom(e.Current);
-                    newChild.SetParent(to);
+                if (nodes.items.isCreated == true) {
+                    var e = nodes.items.GetEnumerator(in Worlds.current.GetState().allocator);
+                    while (e.MoveNext() == true) {
+                        var newChild = new Entity(EntityFlag.None);
+                        newChild.CopyFrom(e.Current);
+                        newChild.SetParent(to);
+                    }
+
+                    e.Dispose();
                 }
-                e.Dispose();
 
             }
             
