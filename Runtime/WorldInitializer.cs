@@ -25,6 +25,8 @@ namespace ME.ECS.Transform {
                 CoreComponentsInitializer.RegisterInitCallback(WorldInitializer.InitTypeId, WorldInitializer.Init, WorldInitializer.Init);
                 WorldStaticCallbacks.RegisterCallbacks(WorldInitializer.EntityCopyFrom);
                 WorldStaticCallbacks.RegisterCallbacks(WorldInitializer.OnEntityDestroy);
+                WorldStaticCallbacks.RegisterViewCreatedCallback(WorldInitializer.OnViewCreated);
+                WorldStaticCallbacks.RegisterViewDestroyCallback(WorldInitializer.OnViewDestroy);
                 WorldStaticCallbacks.SetGetVersionCallback(WorldInitializer.GetEntityVersion);
                 WorldInitializer.initialized = true;
                 
@@ -37,6 +39,8 @@ namespace ME.ECS.Transform {
                 CoreComponentsInitializer.UnRegisterInitCallback(WorldInitializer.InitTypeId, WorldInitializer.Init, WorldInitializer.Init);
                 WorldStaticCallbacks.UnRegisterCallbacks(WorldInitializer.EntityCopyFrom);
                 WorldStaticCallbacks.UnRegisterCallbacks(WorldInitializer.OnEntityDestroy);
+                WorldStaticCallbacks.UnRegisterViewCreatedCallback(WorldInitializer.OnViewCreated);
+                WorldStaticCallbacks.UnRegisterViewDestroyCallback(WorldInitializer.OnViewDestroy);
                 WorldStaticCallbacks.UnSetGetVersionCallback(WorldInitializer.GetEntityVersion);
                 WorldInitializer.initialized = false;
             }
@@ -45,6 +49,33 @@ namespace ME.ECS.Transform {
         public static uint GetEntityVersion(in Entity entity) {
 
             return entity.GetVersionInHierarchy();
+
+        }
+
+        public static void OnViewCreated(in Entity entity, ME.ECS.Views.IView view, int parentId) {
+
+            var viewMono = view as ME.ECS.Views.Providers.MonoBehaviourView;
+            if (viewMono == null) return;
+            
+            var parent = entity.GetParent();
+            if (parent.IsEmpty() == false) {
+
+                var viewModule = Worlds.current.GetModule<ME.ECS.Views.IViewModule>();
+                var parentView = viewModule.GetViewByEntity(parent) as ME.ECS.Views.Providers.MonoBehaviourView;
+                if (parentView != null) {
+                    viewMono.transform.SetParent(parentView.GetParentTransform(parentId));
+                }
+                
+            }
+
+        }
+
+        public static void OnViewDestroy(in Entity entity, ME.ECS.Views.IView view) {
+            
+            var viewMono = view as ME.ECS.Views.Providers.MonoBehaviourView;
+            if (viewMono == null) return;
+
+            viewMono.transform.SetParent(null);
 
         }
 
