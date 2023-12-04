@@ -23,6 +23,10 @@
         public void ReplaceWith(ref ME.ECS.Collections.LowLevel.Unsafe.MemoryAllocator allocator, in Nodes other) {
             this.items.ReplaceWith(ref allocator, other.items);
         }
+        
+        public void CopyFrom(ref ME.ECS.Collections.LowLevel.Unsafe.MemoryAllocator allocator, in Nodes other) {
+            this.items.CopyFrom(ref allocator, other.items);
+        }
 
     }
 
